@@ -1,0 +1,188 @@
+.footer{
+    padding-bottom: 66px;
+    z-index: 10;
+    @media #{$tab}{
+        padding-bottom: 20px;
+    }
+    .modal_div {
+      position: relative;
+      
+      .modal {
+        position: absolute;
+        top: -180px;
+        left: -186px;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        pointer-events: none; 
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        
+        @media #{$tab} {
+          top: -110px;
+          left: 0;
+          right: 0;
+          margin: 0 auto;
+        }
+        
+        &.show {
+          opacity: 1;
+          visibility: visible;
+          pointer-events: auto;
+        }
+        
+        .modal_content {
+          border-radius: 9px;
+          background: #9b4428;
+          box-shadow: 3px 4px 0px 0px rgba(255, 255, 255, 0.5) inset, 3px 4px 0px 0px #6a040f;
+          padding: 21px 14px 17px 19px;
+          max-width: 353px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          gap: 13px;
+          flex-wrap: wrap;
+          transform: scale(1);
+          transition: transform 0.3s ease;
+          
+          @media #{$tab} {
+            max-width: 100%;
+            padding: 10px;
+            gap: 6px;
+          }
+        }
+        
+        .modal_item {
+          text-align: center;
+          
+          @media #{$tab} {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+          }
+          
+          &:nth-child(n + 5) {
+            margin-top: 10px;
+            
+            @media #{$tab} {
+              margin-top: 0;
+            }
+          }
+          
+          .item_image {
+            border-radius: 12px;
+            background: #d1732b;
+            padding: 10px;
+            width: fit-content;
+            
+            @media #{$tab} {
+              padding: 8px;
+              margin: 0 auto;
+            }
+            
+            img {
+              max-width: 50px;
+              object-fit: contain;
+              height: 50px;
+              
+              @media #{$tab} {
+                max-width: 18px;
+                max-height: 18px;
+              }
+            }
+          }
+          
+          .item_text {
+            display: flex;
+            flex-direction: column;
+            font-weight: 400;
+            line-height: normal;
+            border-radius: 12px;
+            background: #d1732b;
+            max-width: 70px;
+            padding: 4px;
+            margin-top: 6px;
+            
+            .hour {
+              font-size: 6px;
+              margin-bottom: 1.2px;
+              
+              @media #{$tab} {
+                font-size: 5px;
+              }
+            }
+            
+            .minut {
+              font-size: 4px;
+            }
+          }
+        }
+        
+        .triangle {
+          position: absolute;
+          bottom: -18px;
+          left: 15px;
+        }
+      }
+    }
+    
+  
+    .mi_items{
+        text-decoration: none;
+        color: inherit;
+        border-radius: 24px;
+        background: #9B4428;
+        box-shadow: 3px 4px 0px 0px rgba(255, 255, 255, 0.50) inset, 3px 4px 0px 0px #6A040F;
+        line-height: normal;
+        padding: 15px 74px;
+        margin-bottom: 13px;
+        @media #{$tab}{
+            padding: 12px;
+            font-size: 10px;
+        }
+    }
+    .menu{
+        display: flex;
+        margin-top: 25px;
+        align-items: center;
+        justify-content: space-between;
+        border-radius: 24px;
+        background: #9B4428;
+        box-shadow: 3px 4px 0px 0px rgba(255, 255, 255, 0.50) inset, 3px 4px 0px 0px #6A040F;
+        padding: 30px 25px 18px 23px;
+        width: 100%;
+        @media #{$tab}{
+            padding: 15px;
+        }
+        .menu_item{
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+            .item_icon{
+                margin-bottom: 15px;
+                @media #{$tab}{
+                    margin-bottom: 10px;
+                }
+                img{
+                    @media #{$tab}{
+                        width: 20px;
+                    }
+                }
+            }
+            .item_word{
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 120%;
+                @media #{$tab}{
+                    font-size: 7px;
+                }
+            }
+        }
+    }
+}

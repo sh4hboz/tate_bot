@@ -1,0 +1,52 @@
+.header{
+    padding-top: 42px;
+    z-index: 10;
+    a{
+        text-decoration: none;
+        color: #fff;
+        font-weight: 400;
+        line-height: normal;
+        text-transform: uppercase;        
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        gap: 0 42px;
+        border-radius: 24px;
+        background: #D1732B;
+        box-shadow: 3px 4px 0px 0px rgba(255, 255, 255, 0.50) inset, 3px 4px 0px 0px #6A040F;
+        @media #{$tab}{
+            gap: 0 15px;
+            font-size: 10px;
+        }
+    }
+    .btn_top_up{
+        width: calc(50% - 28px);
+        flex: 0 0 auto;
+        padding: 29px 0 29px 29px;
+        @media #{$tab}{
+            padding: 12px;
+        }
+       .card{
+            img{
+                @media #{$tab}{
+                    width: 20px;
+                }
+            }
+       }
+    }
+    .balance{
+        width: calc(50% - 28px);
+        flex: 0 0 auto;
+        padding: 24px 0 24px 29px;
+        @media #{$tab}{
+            padding: 12px;
+        }
+        .balance_icon{
+            img{
+                @media #{$tab}{
+                    width: 20px;
+                }
+            }
+        }
+    }
+}

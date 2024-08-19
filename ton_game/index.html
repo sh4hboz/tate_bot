@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tate game</title>
+    <!-- fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+    <div class="main">
+        <header class="header">
+            <div class="container">
+                <div class="row">
+                    <a href="#" class="btn_top_up">
+                        <div class="card">
+                            <img src="assets/images/card.svg" alt="">
+                        </div>
+                        <div class="top_words">top up</div>
+                    </a>
+                    <a href="#" class="balance">
+                        <div class="balance_icon">
+                            <img src="assets/images/balance.svg" alt="">
+                        </div>
+                        <div class="balance_text">
+                            Balance: <span>{{ user.balance }} </span>$
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </header>
+        <footer class="footer">
+            <div class="container">
+                
+                <div class="modal_div">
+                    <a href="#" class="mi_items">
+                        my items
+                    </a>
+                    <div class="modal">
+                        <div class="modal_content">
+                            {% for item in items %}
+                                <div class="modal_item">
+                                    <div class="item_image">
+                                        <img src="{{ item.icon_path }}" alt="{{ item.name }}">
+                                    </div>
+                                    <div class="item_text">
+                                        {% set complete_time_hours = item.complete_time | int // 3600 %}
+                                        {% set complete_time_minutes = (item.complete_time | int % 3600) // 60 %}
+                                        <span class="hour">{{ complete_time_hours }} hours</span>
+                                        <span class="minut">{{ complete_time_minutes }} minut</span>
+                                    </div>
+                                </div>
+                            {% endfor %}
+<!--                            <div class="modal_item">-->
+<!--                                <div class="item_image">-->
+<!--                                    <img src="assets/images/gloves.svg" alt="">-->
+<!--                                </div>-->
+<!--                                <div class="item_text">-->
+<!--                                    <span class="hour">18 hours</span>-->
+<!--                                    <span class="minut">30 minut</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="modal_item">-->
+<!--                                <div class="item_image">-->
+<!--                                    <img src="assets/images/x.svg" alt="">-->
+<!--                                </div>-->
+<!--                                <div class="item_text">-->
+<!--                                    <span class="hour">5 hours</span>-->
+<!--                                    <span class="minut">30 minut</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="modal_item">-->
+<!--                                <div class="item_image">-->
+<!--                                    <img src="assets/images/kerma.svg" alt="">-->
+<!--                                </div>-->
+<!--                                <div class="item_text">-->
+<!--                                    <span class="hour">2 hours</span>-->
+<!--                                    <span class="minut">30 minut</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="modal_item">-->
+<!--                                <div class="item_image">-->
+<!--                                    <img src="assets/images/car.svg" alt="">-->
+<!--                                </div>-->
+<!--                                <div class="item_text">-->
+<!--                                    <span class="hour">22 hours</span>-->
+<!--                                    <span class="minut">30 minut</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="modal_item">-->
+<!--                                <div class="item_image">-->
+<!--                                    <img src="assets/images/plane.svg" alt="">-->
+<!--                                </div>-->
+<!--                                <div class="item_text">-->
+<!--                                    <span class="hour">8 hours</span>-->
+<!--                                    <span class="minut">30 minut</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="modal_item">-->
+<!--                                <div class="item_image">-->
+<!--                                    <img src="assets/images/watch.svg" alt="">-->
+<!--                                </div>-->
+<!--                                <div class="item_text">-->
+<!--                                    <span class="hour">1 hours</span>-->
+<!--                                    <span class="minut">30 minut</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="modal_item">-->
+<!--                                <div class="item_image">-->
+<!--                                    <img src="assets/images/academy.svg" alt="">-->
+<!--                                </div>-->
+<!--                                <div class="item_text">-->
+<!--                                    <span class="hour">11 hours</span>-->
+<!--                                    <span class="minut">30 minut</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+                            <span class="triangle">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="29" height="30" viewBox="0 0 29 30" fill="none">
+                                    <path d="M23.4783 29.2447L0.232121 11.7353L28.4088 0.562783L23.4783 29.2447Z" fill="#9B4428"/>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+              
+                
+                <div class="menu">
+                    <a href="#" class="menu_item openModal" id="trigger" data-modal="1" >
+                        <div class="item_icon">
+                            <img src="assets/images/telegram.svg" alt="">
+                        </div>
+                        <div class="item_word">
+                            social <br>networks
+                        </div>
+                    </a>
+                    <a href="#" class="menu_item openModal " data-modal="2" id="trigger">
+                        <div class="item_icon">
+                            <img src="assets/images/info.svg" alt="">
+                        </div>
+                        <div class="item_word">
+                            info
+                        </div>
+                    </a>
+                    <a href="#" class="menu_item openModal" id="trigger" data-modal="3">
+                        <div class="item_icon">
+                            <img src="assets/images/market.svg" alt="">
+                        </div>
+                        <div class="item_word">
+                            market
+                        </div>
+                    </a>
+                    <a href="#" class="menu_item openModal" data-modal="4">
+                        <div class="item_icon">
+                            <img src="assets/images/phases.svg" alt="">
+                        </div>
+                        <div class="item_word">
+                            phases
+                        </div>
+                    </a>
+                    <a href="#" class="menu_item openModal" data-modal="5">
+                        <div class="item_icon">
+                            <img src="assets/images/friends.svg" alt="">
+                        </div>
+                        <div class="item_word">
+                            friends
+                        </div>
+                    </a>
+                </div>
+                
+    
+                </div>
+            </div>
+        </footer>
+        
+        
+        <!-- market modal  -->
+        <div class="custom_modal" id="modal" data-modal="3">
+            <div class="modal_content ">
+                <div class="modal_header row">
+                    <div class="modal_title">
+                        market
+                    </div>
+                    <a href="#" class="modal_close">
+                        <img src="assets/images/close.svg" alt="">
+                    </a>
+                </div>
+                <div class="modal_body">
+                    <div class="ton_types">
+
+                        {% for item in markets_list %}
+                            <div class="types_item">
+                                <div class="type_icon">
+                                    <img src="{{ item.icon_path }}" alt="{{ item.name }}">
+                                </div>
+                                <div class="type_name">
+                                    {{ item.name }}
+                                </div>
+                                <a href="#" class="type_price" data-target="{{ item.id }}">
+                                    <div class="number">{{ item.price }}</div>
+                                    <div class="ton_image">
+                                        <img src="assets/images/ton.svg" alt="">
+                                    </div>
+                                </a>
+                                <div class="buy_modal" data-target="{{ item.id }}">
+                                    <div class="buy_modal_content">
+                                        <div class="triangle2">
+                                            <!-- SVG kodi -->
+                                        </div>
+                                        <div class="modal_title">buy</div>
+                                        <div class="buttons">
+                                            <a href="#" class="yes">yes</a>
+                                            <a href="#" class="no">no</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+<!--                        <div class="types_item">-->
+<!--                            <div class="type_icon">-->
+<!--                                <img src="assets/images/plane.svg" alt="">-->
+<!--                            </div>-->
+<!--                            <div class="type_name">-->
+<!--                                golden <br>jet-->
+<!--                            </div>-->
+<!--                            <a href="#" class="type_price" data-target="1" >-->
+<!--                                <div class="number">15</div>-->
+<!--                                <div class="ton_image">-->
+<!--                                    <img src="assets/images/ton.svg" alt="">-->
+<!--                                </div>-->
+<!--                            </a>-->
+<!--                            <div class="buy_modal" data-target="1">-->
+<!--                                <div class="buy_modal_content">-->
+<!--                                    <div class="triangle2">-->
+<!--                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="29" viewBox="0 0 30 29" fill="none">-->
+<!--                                            <path d="M29.2256 28.6049L0.8283 22.2366L21.8928 0.441234L29.2256 28.6049Z" fill="#FEF1C4"/>-->
+<!--                                        </svg>-->
+<!--                                    </div>-->
+<!--                                    <div class="modal_title">buy</div>-->
+<!--                                    <div class="buttons">-->
+<!--                                        <a href="#" class="yes">yes</a>-->
+<!--                                        <a href="#" class="no">no</a>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- inner market modal -->
+
+        <div class="custom_modal" id="modal" data-modal="2">
+            <div class="modal_content ">
+                <div class="modal_header row">
+                    <div class="modal_title">
+                        info
+                    </div>
+                    <a href="#" class="modal_close">
+                        <img src="assets/images/close.svg" alt="">
+                    </a>
+                </div>
+                <div class="modal_body">
+                    
+                    <div class="types_description">
+                        <div class="orange_item">
+                            <div class="item_title">
+                                Income Mechanics
+                            </div>
+                            <div class="text">
+                                Your path to wealth begins with acquiring items from Andrew Tate's life, each bringing its own daily income percentage:
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tons">
+                        {% for market in markets_list %}
+                            <div class="left_item">
+                                    <div class="left_title">
+                                        {{ market.name }}
+                                    </div>
+                                    <div class="left_description">
+                                        <div class="inner_items">
+                                            <div class="inner_item">
+                                                Cost:
+                                            </div>
+                                            <div class="inner_item">
+                                                {{ market.price }} TON
+                                            </div>
+                                        </div>
+                                        <div class="inner_items">
+                                            <div class="inner_item">
+                                                Income:
+                                            </div>
+                                            <div class="inner_item">
+                                                {{ market.profitability }} per day
+                                            </div>
+                                        </div>
+                                        <div class="inner_items">
+                                            <div class="inner_item">
+                                                Total:
+                                            </div>
+                                            <div class="inner_item">
+                                                {{ market.total }} TON
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        {% endfor %}
+                    </div>
+                    <div class="referral_program">
+                        <div class="referral_title">
+                            Referral Program
+                        </div>
+                        <div class="referral_description">
+                            And that's not all! Our game features a referral program where you can earn even more. Invite friends to the game and get a percentage of their first purchase. There's nothing better than earning money by inviting others to become part of this exciting world! The more friends you invite, the more money you make – a true virtual financial pyramid, but with bonuses!
+                        </div>
+                    </div>
+                    <div class="percentage">
+                        <div class="percentage_item">
+                            <div class="left_side">Base &nbsp;percentage:</div>
+                            <div class="right_side">1%</div>
+                        </div>
+                        <div class="percentage_item">
+                            <div class="left_side">From &nbsp;5 invited referrals:</div>
+                            <div class="right_side">2%</div>
+                        </div>
+                        <div class="percentage_item">
+                            <div class="left_side">From &nbsp;20 invited referrals:</div>
+                            <div class="right_side">3%</div>
+                        </div>
+                        <div class="percentage_item">
+                            <div class="left_side">From &nbsp;50 invited referrals:</div>
+                            <div class="right_side">4%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="custom_modal" id="modal" data-modal="1">
+            <div class="modal_content ">
+                <div class="modal_header row">
+                    <div class="modal_title">
+                        social <br> network
+                    </div>
+                    <a href="#" class="modal_close">
+                        <img src="assets/images/close.svg" alt="">
+                    </a>
+                </div>
+                <div class="modal_body social_body">
+                    <a href="#" class="social_networks">
+                        <div class="networks_title">
+                            twitter
+                        </div>
+                        <div class="social_networks_item">
+                            <div class="icon">
+                                <img src="assets/images/twitter.png" alt="">
+                            </div>
+                            <div class="word">
+                                ссылка1 11111111
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="#" class="social_networks">
+                        <div class="networks_title">
+                            telegram
+                        </div>
+                        <div class="social_networks_item">
+                            <div class="icon">
+                                <img src="assets/images/telegram2.png" alt="">
+                            </div>
+                            <div class="word">
+                                ссылка1 11111111
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="social_networks">
+                        <div class="networks_title">
+                            website
+                        </div>
+                        <div class="social_networks_item">
+                            <div class="icon">
+                                <img src="assets/images/web.png" alt="">
+                            </div>
+                            <div class="word">
+                                ссылка1 11111111
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="custom_modal" id="modal" data-modal="5">
+            <div class="modal_content ">
+                <div class="modal_header row">
+                    <div class="modal_title">
+                        friends
+                    </div>
+                    <a href="#" class="modal_close">
+                        <img src="assets/images/close.svg" alt="">
+                    </a>
+                </div>
+                <div class="modal_body invite_friends_body">
+                    <div class="invite_friends">
+                        <img src="assets/images/friends.png" alt="">
+                        <div class="title">
+                            invite frens.earn <br> ton
+                        </div>
+                    </div>
+                    <div class="how_it_works">
+                        <div class="how_it_works_title">how it works</div>
+                        <div class="how_it_works_items">
+                            <div class="how_it_works_item">
+                                Share your invitation link
+                            </div>
+                            <div class="how_it_works_item">
+                                your friends join game
+                            </div>
+                            <div class="how_it_works_item">
+                                score percentages from <br> first deposits your buddies
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <a href="#" class="invite_a_frien">invite a fren</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="custom_modal" id="modal" data-modal="4">
+            <div class="modal_content ">
+                <div class="modal_header row">
+                    <div class="modal_title">
+                        phases
+                    </div>
+                    <a href="#" class="modal_close">
+                        <img src="assets/images/close.svg" alt="">
+                    </a>
+                </div>
+                <div class="modal_body">
+                    <div class="phase_item">
+                        <div class="phase_topic">Phase 1:</div>
+                        <p>
+                            Foundations of WealthObjective: Introduce players to the basic mechanics and get them hooked on the initial excitement of wealth accumulation.
+                        </p>
+                        <div class="phase_title">Features:</div>
+                        <p>
+                            Tutorial and Onboarding: A guided tutorial to help players understand how to buy items, earn income, and use basic game functions.Starter Items: Access to initial items like Gloves, Watch, and Twitter Page, each with low entry costs and modest returns.Daily Rewards: Players receive daily login bonuses to encourage regular play.Missions and Quests: Introduce simple daily and weekly missions that offer additional rewards upon completion.Achievement System: Track and reward players for reaching specific milestones (e.g., first item purchased, first income earned).
+                        </p>
+                        <div class="phase_title">Engagement Strategies:</div>
+                        <p>
+                            Community Interaction: Encourage players to join forums and social media groups to share their progress and tips.Referral Program: Players can start earning bonuses by inviting friends, with the potential to unlock special items.
+                        </p>
+                    </div>
+
+                    <div class="phase_item">
+                        <div class="phase_topic">Phase 2:</div>
+                        <p>
+                            Expansion and InfluenceObjective: Broaden the player’s opportunities to earn more and engage with more complex game mechanics.
+                        </p>
+                        <div class="phase_title">Features:</div>
+                        <p>
+                            Advanced Items: Unlock higher-value items like the Orange Bugatti and Yacht with higher returns.Business Ventures: Introduce virtual businesses that generate passive income over time.Competitive Leaderboards: Players can see how they rank against others globally in terms of wealth and achievements.Stock Market Simulation: Allow players to invest in a virtual stock market, adding a strategic layer to wealth accumulation.Special Events: Time-limited events and challenges that offer unique rewards and bonuses.
+                        </p>
+                        <div class="phase_title">Engagement Strategies:</div>
+                        <p>
+                            Guilds and Alliances: Allow players to form or join guilds for collective bonuses and participate in larger cooperative missions.Enhanced Referral Program: Increased bonuses for inviting friends during special campaigns.
+                        </p>
+                    </div>
+
+                    <div class="phase_item">
+                        <div class="phase_topic">Phase 3:</div>
+                        <p>
+                            Legacy and MasteryObjective: Establish long-term engagement by focusing on legacy-building and high-stakes opportunities.
+                        </p>
+                        <div class="phase_title">Features:</div>
+                        <p>
+                            Luxury and Prestige Items: Unlock top-tier items like the Academy and Golden Jet with the highest returns.Legacy Features: Players can create and manage their virtual legacy, including writing autobiographies and building monuments.Generational Wealth: Introduce a feature where players can pass on their wealth and items to new avatars, maintaining long-term engagement.Virtual Real Estate: Purchase, sell, and develop virtual properties within the game.Elite Clubs: Access to exclusive clubs and societies that offer unique benefits and networking opportunities
+                        </p>
+                        <div class="phase_title">Engagement Strategies:</div>
+                        <p>
+                            Seasonal Updates: Regularly introduce new content, items, and features to keep the game fresh and engaging.Community Events: Host community-driven events and competitions with attractive prizes.Feedback Integration: Actively gather and implement player feedback to continuously improve the game experience.Global Challenges: Cooperative and competitive challenges that require collaboration with other players globally.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+    </div>
+    
+    
+    <!-- main js -->
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
