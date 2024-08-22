@@ -146,7 +146,8 @@ document.querySelectorAll('.yes').forEach(button => {
             if (data.status === 'ok') {
                 buyModal.classList.remove('modal_open')
                 typesItem.classList.remove('item')
-                update_data();
+                window.location.reload();
+                // update_data();
             } else {
                 console.error(data.error);
             }
