@@ -99,7 +99,7 @@ async def serve_index(request: Request):
     async with httpx.AsyncClient() as client:
 
         items_response = await client.get(
-            "http://127.0.0.1:8000/get_user_items",
+            "https://tate-bot.vercel.app/get_user_items",
             params={"user_id": 1},
             headers={"Token": Token}
         )
@@ -110,7 +110,7 @@ async def serve_index(request: Request):
         for item in items_data:
             item_id = item['item_id']
             item_response = await client.get(
-                "http://127.0.0.1:8000/get_item",
+                "https://tate-bot.vercel.app/get_item",
                 params={"item_id": item_id},
                 headers={"Token": Token}
             )
@@ -120,7 +120,7 @@ async def serve_index(request: Request):
 
 
         user_response = await client.get(
-            "http://127.0.0.1:8000/get_user",
+            "https://tate-bot.vercel.app/get_user",
             params={"user_id": 1},
             headers={"Token": Token}
         )
@@ -128,7 +128,7 @@ async def serve_index(request: Request):
 
 
         items_response = await client.get(
-            "http://127.0.0.1:8000/get_items",
+            "https://tate-bot.vercel.app/get_items",
             headers={"Token": Token}
         )
         markets_list = items_response.json().get('items', [])
