@@ -1,0 +1,12 @@
+{
+  "builds": [
+    {
+      "src": "db_api.py",
+      "use": "@vercel/python",
+      "config": { "maxLambdaSize": "50mb" }
+    }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "db_api.py" }
+  ]
+}
