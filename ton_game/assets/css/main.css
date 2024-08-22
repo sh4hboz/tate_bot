@@ -1031,7 +1031,12 @@ body.modal_opened::after {
   border-radius: 12px;
   background: #d1732b;
   padding: 10px;
-  width: fit-content;
+  width: max-content;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  letter-spacing: -3px;
 }
 @media (max-width: 722px) {
   .footer .modal_div .modal .modal_item .item_image {

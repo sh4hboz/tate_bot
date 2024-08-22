@@ -27,7 +27,7 @@
                             <img src="assets/images/balance.svg" alt="">
                         </div>
                         <div class="balance_text">
-                            Balance: <span>{{ user.balance }} </span>$
+                            Balance: <span>{{ user.balance }} </span>TON
                         </div>
                     </a>
                 </div>
@@ -42,82 +42,35 @@
                     </a>
                     <div class="modal">
                         <div class="modal_content">
+                            {% set item_counts = {} %}
+                            {% set last_item_times = {} %}
                             {% for item in items %}
+                                {% if item.id in item_counts %}
+                                    {% set item_counts = item_counts.update({item.id: item_counts[item.id] + 1}) %}
+                                {% else %}
+                                    {% set item_counts = item_counts.update({item.id: 1}) %}
+                                {% endif %}
+                                {% set last_item_times = last_item_times.update({item.id: item.complete_time}) %}
+                            {% endfor %}
+
+                            {% for item_id, count in item_counts.items() %}
+                                {% set item = items | selectattr('id', 'equalto', item_id) | list | first %}
+                                {% set complete_time = last_item_times[item_id] %}
+                                {% set complete_time_hours = complete_time | int // 3600 %}
+                                {% set complete_time_minutes = (complete_time | int % 3600) // 60 %}
                                 <div class="modal_item">
                                     <div class="item_image">
+                                        {% if count > 1 %}
+                                            {{ count }}X
+                                        {% endif %}
                                         <img src="{{ item.icon_path }}" alt="{{ item.name }}">
                                     </div>
                                     <div class="item_text">
-                                        {% set complete_time_hours = item.complete_time | int // 3600 %}
-                                        {% set complete_time_minutes = (item.complete_time | int % 3600) // 60 %}
                                         <span class="hour">{{ complete_time_hours }} hours</span>
                                         <span class="minut">{{ complete_time_minutes }} minut</span>
                                     </div>
                                 </div>
                             {% endfor %}
-<!--                            <div class="modal_item">-->
-<!--                                <div class="item_image">-->
-<!--                                    <img src="assets/images/gloves.svg" alt="">-->
-<!--                                </div>-->
-<!--                                <div class="item_text">-->
-<!--                                    <span class="hour">18 hours</span>-->
-<!--                                    <span class="minut">30 minut</span>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="modal_item">-->
-<!--                                <div class="item_image">-->
-<!--                                    <img src="assets/images/x.svg" alt="">-->
-<!--                                </div>-->
-<!--                                <div class="item_text">-->
-<!--                                    <span class="hour">5 hours</span>-->
-<!--                                    <span class="minut">30 minut</span>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="modal_item">-->
-<!--                                <div class="item_image">-->
-<!--                                    <img src="assets/images/kerma.svg" alt="">-->
-<!--                                </div>-->
-<!--                                <div class="item_text">-->
-<!--                                    <span class="hour">2 hours</span>-->
-<!--                                    <span class="minut">30 minut</span>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="modal_item">-->
-<!--                                <div class="item_image">-->
-<!--                                    <img src="assets/images/car.svg" alt="">-->
-<!--                                </div>-->
-<!--                                <div class="item_text">-->
-<!--                                    <span class="hour">22 hours</span>-->
-<!--                                    <span class="minut">30 minut</span>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="modal_item">-->
-<!--                                <div class="item_image">-->
-<!--                                    <img src="assets/images/plane.svg" alt="">-->
-<!--                                </div>-->
-<!--                                <div class="item_text">-->
-<!--                                    <span class="hour">8 hours</span>-->
-<!--                                    <span class="minut">30 minut</span>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="modal_item">-->
-<!--                                <div class="item_image">-->
-<!--                                    <img src="assets/images/watch.svg" alt="">-->
-<!--                                </div>-->
-<!--                                <div class="item_text">-->
-<!--                                    <span class="hour">1 hours</span>-->
-<!--                                    <span class="minut">30 minut</span>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="modal_item">-->
-<!--                                <div class="item_image">-->
-<!--                                    <img src="assets/images/academy.svg" alt="">-->
-<!--                                </div>-->
-<!--                                <div class="item_text">-->
-<!--                                    <span class="hour">11 hours</span>-->
-<!--                                    <span class="minut">30 minut</span>-->
-<!--                                </div>-->
-<!--                            </div>-->
                             <span class="triangle">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="29" height="30" viewBox="0 0 29 30" fill="none">
                                     <path d="M23.4783 29.2447L0.232121 11.7353L28.4088 0.562783L23.4783 29.2447Z" fill="#9B4428"/>
@@ -200,54 +153,26 @@
                                 <div class="type_name">
                                     {{ item.name }}
                                 </div>
-                                <a href="#" class="type_price" data-target="{{ item.id }}">
+                                <a href="#" class="type_price">
                                     <div class="number">{{ item.price }}</div>
                                     <div class="ton_image">
                                         <img src="assets/images/ton.svg" alt="">
                                     </div>
                                 </a>
-                                <div class="buy_modal" data-target="{{ item.id }}">
+                                <div class="buy_modal"">
                                     <div class="buy_modal_content">
                                         <div class="triangle2">
                                             <!-- SVG kodi -->
                                         </div>
                                         <div class="modal_title">buy</div>
                                         <div class="buttons">
-                                            <a href="#" class="yes">yes</a>
+                                            <a href="#" class="yes" data-item-id="{{ item.id }}">yes</a>
                                             <a href="#" class="no">no</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         {% endfor %}
-<!--                        <div class="types_item">-->
-<!--                            <div class="type_icon">-->
-<!--                                <img src="assets/images/plane.svg" alt="">-->
-<!--                            </div>-->
-<!--                            <div class="type_name">-->
-<!--                                golden <br>jet-->
-<!--                            </div>-->
-<!--                            <a href="#" class="type_price" data-target="1" >-->
-<!--                                <div class="number">15</div>-->
-<!--                                <div class="ton_image">-->
-<!--                                    <img src="assets/images/ton.svg" alt="">-->
-<!--                                </div>-->
-<!--                            </a>-->
-<!--                            <div class="buy_modal" data-target="1">-->
-<!--                                <div class="buy_modal_content">-->
-<!--                                    <div class="triangle2">-->
-<!--                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="29" viewBox="0 0 30 29" fill="none">-->
-<!--                                            <path d="M29.2256 28.6049L0.8283 22.2366L21.8928 0.441234L29.2256 28.6049Z" fill="#FEF1C4"/>-->
-<!--                                        </svg>-->
-<!--                                    </div>-->
-<!--                                    <div class="modal_title">buy</div>-->
-<!--                                    <div class="buttons">-->
-<!--                                        <a href="#" class="yes">yes</a>-->
-<!--                                        <a href="#" class="no">no</a>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
                     </div>
                 </div>
             </div>
@@ -497,6 +422,9 @@
     
     
     <!-- main js -->
+    <script>
+
+    </script>
     <script src="assets/js/main.js"></script>
 </body>
 </html>

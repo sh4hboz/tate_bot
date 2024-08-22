@@ -4,7 +4,6 @@ from starlette.responses import HTMLResponse
 from starlette.staticfiles import StaticFiles
 from starlette.templating import Jinja2Templates
 
-import db_change
 from fastapi import FastAPI, Request, Depends
 from models import *
 import db
@@ -13,6 +12,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from ton_api import check_ton_wallet
 from ton import send_ton
 import httpx
+import base64
 
 tags_metadata=[
     {
@@ -58,6 +58,9 @@ templates = Jinja2Templates(directory="ton_game")
 app.mount("/assets", StaticFiles(directory="ton_game/assets"), name="assets")
 
 Token = "q6AUI7RYhksYMQ2HbhDDBA6pA16HS4l4YGYbgvn/OfKXyuEjfPPTMlb?BNC-?NWbC168ne0r8=zDWmAPHe3ogFQdNimC4UfVhK?L41wqn1D?2qOZn2YntAf=JTUG5gg=949v697L-DD5aU9Zm1peZDQ!QPLq1lNOLUPC?BPGe4hsK=ClQw!6Gvv7uhPZNWUUaIJDYS?oA/Eq6k!EcK8u-TE3X8jAyPxc4gnywT24LSAu2GStTkc/1BvkukuKC85x"
+encoded_token = base64.urlsafe_b64encode(Token.encode())
+
+# print("Encoded token:", encoded_token)
 
 # Enter wallet for receiving
 owner_wallet = "EQDftQdPITnb-x8-gj3f15dtpQbn94F1yYxiftLoQPeGBizQ"
@@ -785,5 +788,41 @@ async def ban_user(ban: Banned, request: Request, session: AsyncSession = Depend
         return status_invalid_token
 
 
+@app.post("/buy_item")
+async def buy_item(request: Request, session: AsyncSession = Depends(db.get_async_session)):
+    if request.headers['Token'] == Token:
+        data = await request.json()
+        item_id = data.get('item_id')
+        user_id = 1
 
+        # item data
+        item_response = await get_item(item_id=item_id, request=request, session=session)
+        if item_response.get('status') != 'ok':
+            return item_response
 
+        item_price = float(item_response.get('price'))
+
+        # user data
+        user_response = await get_user(user_id=user_id, request=request, session=session)
+        if user_response.get('status') != 'ok':
+            return user_response
+
+        user_balance = float(user_response.get('balance'))
+        if user_balance > item_price:
+            new_balance = user_balance - item_price
+            print(type(new_balance))
+        else:
+            return {"status": "error", "error": "Not enough balance"}
+
+        # change user balance
+        change_user_response = await change_user(user=User(id=user_id, balance=new_balance), request=request, session=session)
+        if change_user_response.get('status') != 'ok':
+            return change_user_response
+
+        add_item_response = await add_user_item(item=UserItem(user_id=user_id, item_id=item_id), request=request, session=session)
+        if add_item_response.get('status') != 'ok':
+            return add_item_response
+
+        return status_ok
+    else:
+        return status_invalid_token

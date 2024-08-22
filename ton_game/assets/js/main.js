@@ -122,3 +122,127 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 });
+
+document.querySelectorAll('.yes').forEach(button => {
+    button.addEventListener('click', function(event) {
+        event.preventDefault();
+
+        const itemId = this.getAttribute('data-item-id');
+        const buyModal = this.closest('.buy_modal');
+        const typesItem = this.closest('.types_item');
+
+        fetch('/buy_item', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Token': 'q6AUI7RYhksYMQ2HbhDDBA6pA16HS4l4YGYbgvn/OfKXyuEjfPPTMlb?BNC-?NWbC168ne0r8=zDWmAPHe3ogFQdNimC4UfVhK?L41wqn1D?2qOZn2YntAf=JTUG5gg=949v697L-DD5aU9Zm1peZDQ!QPLq1lNOLUPC?BPGe4hsK=ClQw!6Gvv7uhPZNWUUaIJDYS?oA/Eq6k!EcK8u-TE3X8jAyPxc4gnywT24LSAu2GStTkc/1BvkukuKC85x'
+            },
+            body: JSON.stringify({
+                item_id: itemId
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'ok') {
+                buyModal.classList.remove('modal_open')
+                typesItem.classList.remove('item')
+                update_data();
+            } else {
+                console.error(data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+});
+
+function update_data() {
+    const userId = 1; // Foydalanuvchi ID
+
+    const url = new URL('/get_user', window.location.origin);
+    url.searchParams.append('user_id', userId);
+
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Token': 'q6AUI7RYhksYMQ2HbhDDBA6pA16HS4l4YGYbgvn/OfKXyuEjfPPTMlb?BNC-?NWbC168ne0r8=zDWmAPHe3ogFQdNimC4UfVhK?L41wqn1D?2qOZn2YntAf=JTUG5gg=949v697L-DD5aU9Zm1peZDQ!QPLq1lNOLUPC?BPGe4hsK=ClQw!6Gvv7uhPZNWUUaIJDYS?oA/Eq6k!EcK8u-TE3X8jAyPxc4gnywT24LSAu2GStTkc/1BvkukuKC85x'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'ok') {
+            const balanceElement = document.querySelector('.balance_text span');
+            balanceElement.innerText = `${data.balance} `;
+            // Boshqa kerakli ma'lumotlarni ham yangilashingiz mumkin
+        } else {
+            console.error('Error updating data:', data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+function updateItems() {
+    const userId = 1;
+    const url = new URL('/get_user_items', window.location.origin);
+    url.searchParams.append('user_id', userId);
+
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Token': 'q6AUI7RYhksYMQ2HbhDDBA6pA16HS4l4YGYbgvn/OfKXyuEjfPPTMlb?BNC-?NWbC168ne0r8=zDWmAPHe3ogFQdNimC4UfVhK?L41wqn1D?2qOZn2YntAf=JTUG5gg=949v697L-DD5aU9Zm1peZDQ!QPLq1lNOLUPC?BPGe4hsK=ClQw!6Gvv7uhPZNWUUaIJDYS?oA/Eq6k!EcK8u-TE3X8jAyPxc4gnywT24LSAu2GStTkc/1BvkukuKC85x'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'ok') {
+            const items = data.items;
+
+            const itemCounts = {};
+            const lastItemTimes = {};
+
+            items.forEach(item => {
+                if (itemCounts[item.id]) {
+                    itemCounts[item.id]++;
+                } else {
+                    itemCounts[item.id] = 1;
+                }
+                lastItemTimes[item.id] = item.complete_time;
+            });
+
+            const itemsContainer = document.querySelector('footer .modal_content');
+            itemsContainer.innerHTML = ''; // Avvalgi itemlarni o'chirish
+
+            for (const [itemId, count] of Object.entries(itemCounts)) {
+                const item = items.find(item => item.id === parseInt(itemId));
+                const completeTime = lastItemTimes[itemId];
+                const completeTimeHours = Math.floor(completeTime / 3600);
+                const completeTimeMinutes = Math.floor((completeTime % 3600) / 60);
+
+                const itemHTML = `
+                    <div class="modal_item">
+                        <div class="item_image">
+                            ${count > 1 ? `${count}X` : ''}
+                            <img src="${item.icon_path}" alt="${item.name}">
+                        </div>
+                        <div class="item_text">
+                            <span class="hour">${completeTimeHours} hours</span>
+                            <span class="minut">${completeTimeMinutes} minutes</span>
+                        </div>
+                    </div>
+                `;
+
+                itemsContainer.insertAdjacentHTML('beforeend', itemHTML);
+            }
+        } else {
+            console.error('Error updating items:', data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
