@@ -10,7 +10,7 @@ import db
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from ton_api import check_ton_wallet
-from ton import send_ton
+# from ton import send_ton
 import httpx
 import base64
 
@@ -206,36 +206,36 @@ async def check_payment(payment: Payment, request: Request, session: AsyncSessio
         return status_invalid_token
 
 
-@app.post("/send_ton_to_client", tags=["send_ton_to_client"])
-async def send_ton_api(send: SendTon, request: Request, session: AsyncSession = Depends(db.get_async_session)):
-    if request.headers['Token'] == Token:
-        db_user = await get_user_on_id(id=send.user_id, session=session)
-        if not db_user:
-            return {"status": "error", "error": "user not found"}
-        try:
-            needed_balance = send.amount * 105 / 100
-            print(needed_balance)
-            if not db_user.balance >= needed_balance:
-                return {"status": "error", "error": f"the user doesn't have that much money, user_id: {send.user_id}"}
-            else:
-                res = await send_ton(address_client=send.wallet, amount=send.amount)
-                if res["status"] == "success":
-                    db_paymentsToUsers = db.PaymentsToUsers(user_id=send.user_id,
-                                                            user_wallet=send.wallet,
-                                                            amount_ton=send.amount,
-                                                            tax_service=needed_balance - send.amount,
-                                                            complete_time=datetime.datetime.now())
-                    session.add(db_paymentsToUsers)
-                    db_user.balance -= needed_balance
-                    await session.commit()
-                    return status_ok
-                else:
-                    return res
-        except Exception as e:
-            return {"status": "error", "error": str(e)}
+# @app.post("/send_ton_to_client", tags=["send_ton_to_client"])
+# async def send_ton_api(send: SendTon, request: Request, session: AsyncSession = Depends(db.get_async_session)):
+#     if request.headers['Token'] == Token:
+#         db_user = await get_user_on_id(id=send.user_id, session=session)
+#         if not db_user:
+#             return {"status": "error", "error": "user not found"}
+#         try:
+#             needed_balance = send.amount * 105 / 100
+#             print(needed_balance)
+#             if not db_user.balance >= needed_balance:
+#                 return {"status": "error", "error": f"the user doesn't have that much money, user_id: {send.user_id}"}
+#             else:
+#                 res = await send_ton(address_client=send.wallet, amount=send.amount)
+#                 if res["status"] == "success":
+#                     db_paymentsToUsers = db.PaymentsToUsers(user_id=send.user_id,
+#                                                             user_wallet=send.wallet,
+#                                                             amount_ton=send.amount,
+#                                                             tax_service=needed_balance - send.amount,
+#                                                             complete_time=datetime.datetime.now())
+#                     session.add(db_paymentsToUsers)
+#                     db_user.balance -= needed_balance
+#                     await session.commit()
+#                     return status_ok
+#                 else:
+#                     return res
+#         except Exception as e:
+#             return {"status": "error", "error": str(e)}
 
-    else:
-        return status_invalid_token
+#     else:
+#         return status_invalid_token
 
 
 @app.get("/get_wallet_for_receive", tags=["get_wallet_for_receive"])
